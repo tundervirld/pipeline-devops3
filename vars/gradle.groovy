@@ -34,7 +34,7 @@ def sCurlSpring(){
     env.STAGE = "Paso 3: Curl Springboot Gradle sleep 20"
     stage("$env.STAGE "){
         sh "gradle bootRun&"
-        sh "sleep 20  curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
+        sh "sleep 20 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
     }
 }
 def sUNexus(){
@@ -63,7 +63,7 @@ def sUNexus(){
 def sDNexus(){
      stage("Paso 5: Descargar Nexus"){
         env.STAGE = env.STAGE_NAME
-        sh ' curl -X GET -u $NEXUS_USER:$NEXUS_PASSWORD "http://nexus3:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar" -O'
+        sh 'curl -X GET -u $NEXUS_USER:$NEXUS_PASSWORD "http://nexus3:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar" -O'
     }
 
 }
@@ -77,7 +77,7 @@ def sTestJar(){
 def sCurlJar(){
     stage("Paso 7: Testear Artefacto - Dormir(Esperar 20sg) "){
         env.STAGE = env.STAGE_NAME
-        sh "sleep 20  curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
+        sh "sleep 20 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
     }
 }
 
