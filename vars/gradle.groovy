@@ -6,7 +6,7 @@ def call(stages){
     sSonar()
     sCurlSpring()
     sUNexus()
-    sDNexus
+    sDNexus()
     sTestJar()
     sCurlJar()
 }
