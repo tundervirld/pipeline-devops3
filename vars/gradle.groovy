@@ -27,7 +27,7 @@ def call(stages){
             if(it == "sonar"){
                 sSonar()
             }else{
-                sh "echo Caso else"
+                sh "echo 'Caso else'"
             }
 
         }
