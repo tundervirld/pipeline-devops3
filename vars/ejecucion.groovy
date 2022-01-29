@@ -7,6 +7,7 @@ def call(){
         }
         parameters {
             choice  name: 'compileTool', choices: ['Gradle', 'Maven'], description: 'Seleccione el empaquetador maven/gradle'
+            string  name: 'stages', description: 'Ingrese los stages para ejecutar', trim: true
         }
         stages {
             stage("Pipeline"){
@@ -14,33 +15,29 @@ def call(){
                     script{
                         // params.compileTool
                         sh "env"
+                        env.STAGE  = ""
                         switch(params.compileTool)
                         {
                             case 'Maven':
                                 echo "Maven"
                                 // def ejecucion = load 'maven.groovy'
                                 // ejecucion.call()
-                                maven.call()
+                                maven.call(params.stages)
                             break;
                             case 'Gradle':
                                 // def ejecucion = load 'gradle.groovy'
                                 // ejecucion.call()
-                                gradle.call()
+                                gradle.call(params.stages)
                             break;
                         }
                     }
                 }
-                post {
-                    always {
-                        sh "echo 'fase always executed post'"
+                post{
+                    success{
+                        slackSend color: 'good', message: "[Mentor Devops] [${JOB_NAME}] [${BUILD_TAG}] Ejecucion Exitosa", teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'token-user-slack'
                     }
-
-                    success {
-                        sh "echo 'fase success'"
-                    }
-
-                    failure {
-                        sh "echo 'fase failure'"
+                    failure{
+                        slackSend color: 'danger', message: "[Mentor Devops] [${env.JOB_NAME}] [${BUILD_TAG}] Ejecucion fallida en stage [${env.STAGE}]", teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'token-user-slack'
                     }
                 }
             }
