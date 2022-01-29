@@ -1,3 +1,5 @@
+import utilities.*
+
 def call(stages){
     def stagesList = stages.split(';')
     sh "echo ${stagesList}"
@@ -32,6 +34,21 @@ def call(stages){
 
         }
     }
+
+    //  def arrayUtils = new array.arrayExtentions();
+    // def stagesArray = []
+    //     stagesArray = arrayUtils.searchKeyInArray(stages, ";", listStagesOrder)
+
+    // if (stagesArray.isEmpty()) {
+    //     echo 'El pipeline se ejecutará completo'
+    //     allStages()
+    // } else {
+    //     echo 'Stages a ejecutar :' + stages
+    //     stagesArray.each{ stageFunction ->//variable as param
+    //         echo 'Ejecutando ' + stageFunction
+    //         "${stageFunction}"()
+    //     }
+    // }
 
 }
 
