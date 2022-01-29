@@ -1,8 +1,8 @@
 import utilities.*
 
 def call(stages){
-    def stagesList = stages.split(';')
-    sh "echo ${stagesList}"
+    // def stagesList = stages.split(';')
+    // sh "echo ${stagesList}"
     //Escribir directamente el código del stage, sin agregarle otra clausula de Jenkins.
     // sBuild()
     // sSonar()
@@ -22,36 +22,44 @@ def call(stages){
         'curl_jar': 'sCurlJar'
     ]
 
-    stagesList.each{
-        if(it == "build"){
-            sBuild()
-        }else{
-            if(it == "sonar"){
-                sSonar()
-            }else{
-                sh "echo 'Caso else'"
-            }
+    // stagesList.each{
+    //     if(it == "build"){
+    //         sBuild()
+    //     }else{
+    //         if(it == "sonar"){
+    //             sSonar()
+    //         }else{
+    //             sh "echo 'Caso else'"
+    //         }
 
-        }
-    }
-
-    //  def arrayUtils = new array.arrayExtentions();
-    // def stagesArray = []
-    //     stagesArray = arrayUtils.searchKeyInArray(stages, ";", listStagesOrder)
-
-    // if (stagesArray.isEmpty()) {
-    //     echo 'El pipeline se ejecutará completo'
-    //     allStages()
-    // } else {
-    //     echo 'Stages a ejecutar :' + stages
-    //     stagesArray.each{ stageFunction ->//variable as param
-    //         echo 'Ejecutando ' + stageFunction
-    //         "${stageFunction}"()
     //     }
     // }
 
-}
+    def arrayUtils = new array.arrayExtentions();
+    def stagesArray = []
+        stagesArray = arrayUtils.searchKeyInArray(stages, ";", listStagesOrder)
 
+    if (stagesArray.isEmpty()) {
+        echo 'El pipeline se ejecutará completo'
+        allStages()
+    } else {
+        echo 'Stages a ejecutar :' + stages
+        stagesArray.each{ stageFunction ->//variable as param
+            echo 'Ejecutando ' + stageFunction
+            "${stageFunction}"()
+        }
+    }
+
+}
+def allStages(){
+    sBuild()
+    sSonar()
+    sCurlSpring()
+    sUNexus()
+    sDNexus()
+    sTestJar()
+    sCurlJar()
+}
 def sBuild(){
     env.STAGE = "Paso 1: Build  Test"
     stage("$env.STAGE "){
