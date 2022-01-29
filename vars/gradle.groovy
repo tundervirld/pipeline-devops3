@@ -2,13 +2,37 @@ def call(stages){
     def stagesList = stages.split(';')
     sh "echo ${stagesList}"
     //Escribir directamente el código del stage, sin agregarle otra clausula de Jenkins.
-    sBuild()
-    sSonar()
-    sCurlSpring()
-    sUNexus()
-    sDNexus()
-    sTestJar()
-    sCurlJar()
+    // sBuild()
+    // sSonar()
+    // sCurlSpring()
+    // sUNexus()
+    // sDNexus()
+    // sTestJar()
+    // sCurlJar()
+
+    def listStagesOrder = [
+        'build': 'sBuild',
+        'sonar': 'sSonar',
+        'run_spring_curl': 'sCurlSpring',
+        'upload_nexus': 'sUNexus',
+        'download_nexus': 'sDNexus',
+        'run_jar': 'sTestJar',
+        'curl_jar': 'sCurlJar'
+    ]
+
+    stagesList.each{
+        if(it == "build"){
+            sBuild()
+        }else{
+            if(it == "sonar"){
+                sSonar()
+            }else{
+                sh "echo Caso else"
+            }
+
+        }
+    }
+
 }
 
 def sBuild(){
